@@ -1,6 +1,7 @@
 import streamlit as st
+import random
 
-# MBTI별 직업 추천 데이터 (16개 모두)
+# MBTI별 직업 추천 데이터 (16개)
 mbti_jobs = {
     "ISTJ": ["📊 회계사", "🪖 군인", "🏛️ 행정 공무원"],
     "ISFJ": ["💉 간호사", "🤝 사회복지사", "📚 교사"],
@@ -24,21 +25,43 @@ mbti_jobs = {
 }
 
 # 페이지 세팅
-st.set_page_config(page_title="🌟 MBTI 직업 추천 🌟", layout="centered")
+st.set_page_config(page_title="🌈 초화려 MBTI 직업 추천 🌈", layout="wide")
 
 # 헤더 꾸미기
-st.markdown("<h1 style='text-align: center;'>🌱 MBTI 기반 직업 추천 🌱</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: gray;'>✨ 당신의 성격 유형에 딱 맞는 직업을 찾아보세요 ✨</h3>", unsafe_allow_html=True)
-st.write("---")
+st.markdown(
+    """
+    <div style="text-align: center; background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1); padding: 30px; border-radius: 15px;">
+        <h1 style="color: white; font-size: 50px;">🌟 MBTI 기반 직업 추천 🌟</h1>
+        <h3 style="color: #fff;">✨ 당신의 성격 유형에 꼭 맞는 직업을 찾아보세요 ✨</h3>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.write("")
 
 # 드롭다운 선택
 selected_mbti = st.selectbox("👉 당신의 MBTI를 선택하세요!", list(mbti_jobs.keys()))
 
 # 결과 출력
 if selected_mbti:
-    st.success(f"🎉 {selected_mbti} 유형에 어울리는 직업 추천 🏆")
+    # 랜덤한 화려한 색상 이펙트
+    colors = ["#FF6F61", "#6B5B95", "#88B04B", "#F7CAC9", "#92A8D1", "#F7786B", "#34AADC", "#F4A300"]
+    chosen_color = random.choice(colors)
+
+    st.markdown(
+        f"""
+        <div style="background-color:{chosen_color}; padding:20px; border-radius:10px; text-align:center;">
+            <h2 style="color:white; font-size:30px;">🎉 당신은 <b>{selected_mbti}</b> 유형! 🎉</h2>
+            <p style="color:white; font-size:18px;">어울리는 직업 리스트를 확인하세요 🔥</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.write("")
     for job in mbti_jobs[selected_mbti]:
-        st.markdown(f"- {job}")
-    
+        st.markdown(f"<h4 style='text-align: center;'>✨ {job} ✨</h4>", unsafe_allow_html=True)
+
     st.write("---")
-    st.info("💡 TIP: MBTI는 참고용이에요! 진로 선택은 자신의 흥미와 능력을 함께 고려하세요 ✨")
+    st.info("💡 TIP: MBTI는 성격 유형 참고용이에요! 진짜 진로는 당신의 흥미와 능력에 따라 결정하세요 🚀")
