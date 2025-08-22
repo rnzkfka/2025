@@ -1,67 +1,48 @@
 import streamlit as st
-import random
+import folium
+from streamlit_folium import st_folium
+import json
 
-# MBTI별 직업 추천 데이터 (16개)
-mbti_jobs = {
-    "ISTJ": ["📊 회계사", "🪖 군인", "🏛️ 행정 공무원"],
-    "ISFJ": ["💉 간호사", "🤝 사회복지사", "📚 교사"],
-    "INFJ": ["🧘 상담가", "✍️ 작가", "🌍 인권운동가"],
-    "INTJ": ["📈 데이터 사이언티스트", "🧠 전략 컨설턴트", "🔬 연구원"],
-
-    "ISTP": ["⚙️ 엔지니어", "✈️ 파일럿", "🚒 소방관"],
-    "ISFP": ["🎨 예술가", "👗 패션 디자이너", "👐 물리치료사"],
-    "INFP": ["🖋️ 작가", "💬 심리상담가", "🤲 NGO 활동가"],
-    "INTP": ["📖 철학자", "💻 개발자", "🔎 연구원"],
-
-    "ESTP": ["💼 세일즈 매니저", "🚀 기업가", "🏋️ 스포츠 코치"],
-    "ESFP": ["🎤 배우", "🎉 이벤트 플래너", "🌍 여행 가이드"],
-    "ENFP": ["📢 마케터", "🎙️ 강연가", "📰 언론인"],
-    "ENTP": ["🏦 스타트업 창업자", "⚖️ 변호사", "🏛️ 정치인"],
-
-    "ESTJ": ["📂 경영 관리자", "⚖️ 판사", "🪖 군 간부"],
-    "ESFJ": ["👩‍⚕️ HR 매니저", "📚 초등교사", "💉 간호사"],
-    "ENFJ": ["🧠 심리학자", "🏫 교육자", "🌟 정치가"],
-    "ENTJ": ["💼 CEO", "⚖️ 변호사", "📊 경영 컨설턴트"]
+# 지방 거점 국립대 매핑
+regional_univs = {
+    "부산광역시": "부산대학교",
+    "대구광역시": "경북대학교",
+    "광주광역시": "전남대학교",
+    "전라북도": "전북대학교",
+    "대전광역시": "충남대학교",
+    "충청북도": "충북대학교",
+    "강원특별자치도": "강원대학교",
+    "경상남도": "경상국립대학교",
+    "제주특별자치도": "제주대학교"
 }
 
-# 페이지 세팅
-st.set_page_config(page_title="🌈 초화려 MBTI 직업 추천 🌈", layout="wide")
+st.title("대한민국 지방 거점 국립대학 지도")
 
-# 헤더 꾸미기
-st.markdown(
-    """
-    <div style="text-align: center; background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1); padding: 30px; border-radius: 15px;">
-        <h1 style="color: white; font-size: 50px;">🌟 MBTI 기반 직업 추천 🌟</h1>
-        <h3 style="color: #fff;">✨ 당신의 성격 유형에 꼭 맞는 직업을 찾아보세요 ✨</h3>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# 지도 객체 생성
+m = folium.Map(location=[36.5, 127.8], zoom_start=7)
 
-st.write("")
+# GeoJSON 파일 불러오기 (행정구역 경계)
+# 행정구역 GeoJSON은 'korea_regions.json' 같은 파일이 필요
+with open("korea_regions.json", encoding="utf-8") as f:
+    geojson_data = json.load(f)
 
-# 드롭다운 선택
-selected_mbti = st.selectbox("👉 당신의 MBTI를 선택하세요!", list(mbti_jobs.keys()))
+# 지역별 polygon 추가
+folium.GeoJson(
+    geojson_data,
+    name="지역",
+    tooltip=folium.GeoJsonTooltip(fields=["name"], aliases=["지역:"]),
+    popup=folium.GeoJsonPopup(fields=["name"])
+).add_to(m)
 
-# 결과 출력
-if selected_mbti:
-    # 랜덤한 화려한 색상 이펙트
-    colors = ["#FF6F61", "#6B5B95", "#88B04B", "#F7CAC9", "#92A8D1", "#F7786B", "#34AADC", "#F4A300"]
-    chosen_color = random.choice(colors)
+# Streamlit에서 지도 출력
+map_data = st_folium(m, width=700, height=500)
 
-    st.markdown(
-        f"""
-        <div style="background-color:{chosen_color}; padding:20px; border-radius:10px; text-align:center;">
-            <h2 style="color:white; font-size:30px;">🎉 당신은 <b>{selected_mbti}</b> 유형! 🎉</h2>
-            <p style="color:white; font-size:18px;">어울리는 직업 리스트를 확인하세요 🔥</p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+# 클릭한 지역 확인
+if map_data["last_active_drawing"]:
+    clicked_region = map_data["last_active_drawing"]["properties"]["name"]
+    st.write(f"선택한 지역: **{clicked_region}**")
 
-    st.write("")
-    for job in mbti_jobs[selected_mbti]:
-        st.markdown(f"<h4 style='text-align: center;'>✨ {job} ✨</h4>", unsafe_allow_html=True)
-
-    st.write("---")
-    st.info("💡 TIP: MBTI는 성격 유형 참고용이에요! 진짜 진로는 당신의 흥미와 능력에 따라 결정하세요 🚀")
+    if clicked_region in regional_univs:
+        st.success(f"해당 지역의 지방 거점 국립대학은 **{regional_univs[clicked_region]}** 입니다!")
+    else:
+        st.warning("이 지역에는 지방 거점 국립대학이 없습니다.")
