@@ -1,17 +1,5 @@
 import streamlit as st
 
-# 페이지 전체 글씨 폰트를 맑은 고딕으로 변경
-st.markdown(
-    """
-    <style>
-    html, body, [class*="css"]  {
-        font-family: 'Malgun Gothic', 'Arial', sans-serif;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # 전국 시/도별 대학교 리스트 (최대 5개)
 universities = {
     "서울특별시": ["서울대학교", "연세대학교", "고려대학교", "한양대학교", "성균관대학교"],
@@ -126,9 +114,38 @@ dept_emojis = {
     "특수교육과": "📝",
 }
 
-# 기존 상단 타이틀 제거 후 새 타이틀 설정
-st.title("전국 대학교와 학과")
+# 대학교별 대표 색상
+uni_colors = {
+    "서울대학교": "#003366",
+    "연세대학교": "#003399",
+    "고려대학교": "#990000",
+    "한양대학교": "#FF6600",
+    "성균관대학교": "#0033CC",
+    "전남대학교": "#006633",
+    "조선대학교": "#CC0033",
+    "광주과학기술원": "#FFCC00",
+    "부산대학교": "#003366",
+    "부경대학교": "#006699",
+    "부산가톨릭대학교": "#990000",
+    "신라대학교": "#FF6600",
+    "제주대학교": "#339966",
+    # 필요시 나머지 대학교 색상 추가
+}
 
+# 전체 폰트를 맑은 고딕으로 변경
+st.markdown(
+    """
+    <style>
+    html, body, [class*="css"]  {
+        font-family: 'Malgun Gothic', 'Arial', sans-serif;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# 상단 타이틀
+st.title("전국 대학교와 학과")
 
 # 지역 선택
 selected_region = st.selectbox("지역을 선택하세요", sorted(universities.keys()))
@@ -136,12 +153,28 @@ selected_region = st.selectbox("지역을 선택하세요", sorted(universities.
 # 선택된 지역의 대학교 출력
 if selected_region:
     st.subheader(f"{selected_region}의 대학교")
-    for uni in universities[selected_region][:5]:  # 최대 5개
+    for uni in universities[selected_region][:5]:
+        color = uni_colors.get(uni, "#FFFFFF")  # 기본 흰색
         with st.expander(uni):
+            # CSS로 expander 배경색 적용
+            st.markdown(
+                f"""
+                <style>
+                div[role="region"] > div:first-child {{
+                    background-color: {color};
+                    padding: 10px;
+                    border-radius: 5px;
+                    color: white;
+                }}
+                </style>
+                """,
+                unsafe_allow_html=True
+            )
+            # 학과 리스트 출력
             dept_list = departments.get(uni, [])
             if dept_list:
-                for dept in dept_list[:5]:  # 최대 5개 학과
-                    emoji = dept_emojis.get(dept, "🏫")  # 없는 경우 기본 이모지
+                for dept in dept_list[:5]:
+                    emoji = dept_emojis.get(dept, "🏫")
                     st.write(f"- {emoji} {dept}")
             else:
                 st.write("학과 정보 없음")
