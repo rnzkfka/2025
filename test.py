@@ -1,67 +1,49 @@
 import streamlit as st
-import folium
-from streamlit_folium import st_folium
+import streamlit.components.v1 as components
 
-# ✅ 대한민국 시·도 GeoJSON 데이터 (간략화 버전)
-#  → 원본은 좌표가 매우 길기 때문에 여기서는 축약된 예시만 넣었습니다.
-#  실제 사용 시엔 전체 좌표를 넣으면 정상 동작합니다.
-korea_geojson = {
-    "type": "FeatureCollection",
-    "features": [
-        {
-            "type": "Feature",
-            "properties": {"name": "부산광역시"},
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[[129.0, 35.0], [129.2, 35.0], [129.2, 35.3], [129.0, 35.3], [129.0, 35.0]]]
-            },
-        },
-        {
-            "type": "Feature",
-            "properties": {"name": "대구광역시"},
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[[128.5, 35.7], [128.8, 35.7], [128.8, 36.0], [128.5, 36.0], [128.5, 35.7]]]
-            },
-        },
-        # 👉 나머지 시·도들도 같은 방식으로 추가해야 전체 지도 완성됨
-    ],
+# 지방 거점 국립대 데이터
+universities = {
+    "서울": "서울대학교",
+    "부산": "부산대학교",
+    "대구": "경북대학교",
+    "광주": "전남대학교",
+    "대전": "충남대학교",
+    "강원": "강원대학교",
+    "경북": "경북대학교",
+    "경남": "경상대학교",
+    "전북": "전북대학교",
+    "전남": "전남대학교",
+    "충북": "충북대학교",
+    "충남": "충남대학교",
+    "제주": "제주대학교",
 }
 
-# ✅ 지방 거점 국립대 매핑
-regional_univs = {
-    "부산광역시": "부산대학교",
-    "대구광역시": "경북대학교",
-    "광주광역시": "전남대학교",
-    "전라북도": "전북대학교",
-    "대전광역시": "충남대학교",
-    "충청북도": "충북대학교",
-    "강원특별자치도": "강원대학교",
-    "경상남도": "경상국립대학교",
-    "제주특별자치도": "제주대학교"
-}
+# 선택한 지역 (세션에 저장)
+if "selected_region" not in st.session_state:
+    st.session_state["selected_region"] = None
 
-st.title("대한민국 지방 거점 국립대학 지도")
+# SVG 예시 (실제로는 훨씬 큰 SVG가 필요합니다)
+svg_map = """
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="300">
+  <style>
+    .region { fill: lightgray; stroke: black; stroke-width: 1; cursor: pointer; }
+    .region:hover { fill: orange; }
+  </style>
+  <script>
+    function selectRegion(region) {
+      const streamlitEvent = new CustomEvent("streamlit:setComponentValue", {detail: region});
+      window.parent.document.dispatchEvent(streamlitEvent);
+    }
+  </script>
+  <rect x="50" y="50" width="100" height="100" class="region" onclick="selectRegion('서울')" />
+  <rect x="200" y="100" width="120" height="120" class="region" onclick="selectRegion('부산')" />
+  <rect x="100" y="250" width="150" height="150" class="region" onclick="selectRegion('대구')" />
+</svg>
+"""
 
-# ✅ 지도 생성
-m = folium.Map(location=[36.5, 127.8], zoom_start=7)
+region = components.html(svg_map, height=600, width=500)
 
-folium.GeoJson(
-    korea_geojson,
-    name="지역",
-    tooltip=folium.GeoJsonTooltip(fields=["name"], aliases=["지역:"]),
-    popup=folium.GeoJsonPopup(fields=["name"]),
-).add_to(m)
-
-# ✅ Streamlit에 지도 표시
-map_data = st_folium(m, width=700, height=500)
-
-# ✅ 클릭한 지역 처리
-if map_data and map_data.get("last_active_drawing"):
-    clicked_region = map_data["last_active_drawing"]["properties"]["name"]
-    st.write(f"선택한 지역: **{clicked_region}**")
-
-    if clicked_region in regional_univs:
-        st.success(f"해당 지역의 지방 거점 국립대학은 **{regional_univs[clicked_region]}** 입니다!")
-    else:
-        st.warning("이 지역에는 지방 거점 국립대학이 없습니다.")
+# 클릭된 지역 처리
+if region is not None and region in universities:
+    st.subheader(f"📍 {region}")
+    st.write(f"🎓 {universities[region]}")
