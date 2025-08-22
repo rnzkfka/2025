@@ -155,3 +155,24 @@ if selected_region:
                 """,
                 unsafe_allow_html=True
             )
+
+# 배경색이 어두운 경우 글자색 자동 변경
+# RGB → HLS로 변환하여 밝기(L) 확인
+r = int(color[1:3], 16) / 255
+g = int(color[3:5], 16) / 255
+b = int(color[5:7], 16) / 255
+h, l, s = rgb_to_hls(r, g, b)
+
+# 밝기가 낮으면 글자색 흰색
+text_color = "#FFFFFF" if l < 0.5 else "#000000"
+
+st.markdown(
+    f"""
+    <style>
+    .stApp .css-1d391kg {{ color: {text_color}; }}   /* 타이틀 */
+    .stApp .css-1v3fvcr {{ color: {text_color}; }}   /* 서브헤더 */
+    .stApp .st-bx {{ color: {text_color}; }}         /* 선택박스 */
+    </style>
+    """,
+    unsafe_allow_html=True
+)
