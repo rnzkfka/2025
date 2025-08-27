@@ -170,13 +170,17 @@ departments = {
 # -------------------------
 # 5. 지역 및 대학교 선택
 # -------------------------
-region = st.selectbox("지역을 선택하세요:", list(universities.keys()))
-univ = st.selectbox("대학교를 선택하세요:", universities[region])
+region = st.selectbox("지역을 선택하세요:", ["미선택"] + list(universities.keys()), index=0)
+
+if region != "미선택":
+    univ = st.selectbox("대학교를 선택하세요:", ["미선택"] + universities[region], index=0)
+else:
+    univ = "미선택"
 
 # -------------------------
 # 6. 배경 색상 적용
 # -------------------------
-if univ:
+if univ != "미선택":
     st.subheader(f"{univ}의 학과 리스트")
 
     color = university_colors.get(univ, "#FFFFFF")
@@ -185,26 +189,30 @@ if univ:
     b = int(color[5:7], 16) / 255
     h, l, s = rgb_to_hls(r, g, b)
     text_color = "#FFFFFF" if l < 0.5 else "#000000"
+else:
+    color = "#FFFFFF"
+    text_color = "#000000"
 
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-color: {color};
-            color: {text_color};
-            font-family: 'Malgun Gothic', sans-serif;
-        }}
-        h1, h2, h3, h4, h5, h6, .stSelectbox label {{
-            color: {text_color};
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-color: {color};
+        color: {text_color};
+        font-family: 'Malgun Gothic', sans-serif;
+    }}
+    h1, h2, h3, h4, h5, h6, .stSelectbox label {{
+        color: {text_color};
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-    # -------------------------
-    # 7. 학과 출력
-    # -------------------------
+# -------------------------
+# 7. 학과 출력
+# -------------------------
+if univ != "미선택":
     if univ in departments:
         for dept in departments[univ]:
             st.write(f"- {dept}")
