@@ -357,13 +357,13 @@ st.markdown(
 if univ != "미선택":
     if univ in departments:
         for dept in departments[univ]:
-            # 학과 이름과 버튼을 한 줄에 배치
+            # 학과 이름과 버튼 한 줄 배치
             cols = st.columns([3,1])
             cols[0].write(f"- {dept}")  # 학과 이름
             
-            # 학과 설명 버튼
-            if dept in department_descriptions:
-                if cols[1].button("설명 보기", key=f"{univ}_{dept}"):
-                    st.info(f"{dept} 설명: {department_descriptions[dept]}")
+            # 모든 학과에 대해 설명 버튼 생성
+            if cols[1].button("설명 보기", key=f"{univ}_{dept}"):
+                description = department_descriptions.get(dept, "이 학과의 상세 설명은 준비 중입니다.")
+                st.info(f"{dept} 설명: {description}")
     else:
         st.write("학과 정보가 준비되지 않았습니다.")
