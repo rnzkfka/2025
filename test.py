@@ -101,6 +101,73 @@ university_colors = {
 }
 
 # -------------------------
+# 3-1. 대학교 홈페이지 URL
+# -------------------------
+university_urls = {
+    "서울대학교": "https://www.snu.ac.kr",
+    "연세대학교": "https://www.yonsei.ac.kr",
+    "고려대학교": "https://www.korea.ac.kr",
+    "한양대학교": "https://www.hanyang.ac.kr",
+    "성균관대학교": "https://www.skku.edu",
+    "전남대학교": "https://www.jnu.ac.kr",
+    "조선대학교": "https://www.chosun.ac.kr",
+    "광주과학기술원": "https://www.gist.ac.kr",
+    "부산대학교": "https://www.pusan.ac.kr",
+    "동아대학교": "https://www.donga.ac.kr",
+    "부경대학교": "https://www.pknu.ac.kr",
+    "부산가톨릭대학교": "https://www.cup.ac.kr",
+    "신라대학교": "https://www.silla.ac.kr",
+    "경북대학교": "https://www.knu.ac.kr",
+    "계명대학교": "https://www.kmu.ac.kr",
+    "대구가톨릭대학교": "https://www.cu.ac.kr",
+    "영남대학교": "https://www.yu.ac.kr",
+    "경일대학교": "https://www.kiu.ac.kr",
+    "인하대학교": "https://www.inha.ac.kr",
+    "경인교육대학교": "https://www.ginue.ac.kr",
+    "인천대학교": "https://www.inu.ac.kr",
+    "인천가톨릭대학교": "https://www.iccu.ac.kr",
+    "충남대학교": "https://www.cnu.ac.kr",
+    "한남대학교": "https://www.hannam.ac.kr",
+    "목원대학교": "https://www.mokwon.ac.kr",
+    "배재대학교": "https://www.pcu.ac.kr",
+    "울산대학교": "https://www.ulsan.ac.kr",
+    "을지대학교": "https://www.eulji.ac.kr",
+    "울산과학대학교": "https://www.uc.ac.kr",
+    "성균관대학교(수원)": "https://www.skku.edu",
+    "경기대학교": "https://www.kyonggi.ac.kr",
+    "한양대학교(ERICA)": "https://www.hanyang.ac.kr/web/ERICA",
+    "수원대학교": "https://www.suwon.ac.kr",
+    "가천대학교": "https://www.gachon.ac.kr",
+    "강원대학교": "https://www.kangwon.ac.kr",
+    "한라대학교": "https://www.halla.ac.kr",
+    "강릉원주대학교": "https://www.gwnu.ac.kr",
+    "강릉영동대학교": "https://www.gyc.ac.kr",
+    "충북대학교": "https://www.chungbuk.ac.kr",
+    "청주대학교": "https://www.cju.ac.kr",
+    "서원대학교": "https://www.seowon.ac.kr",
+    "건국대학교(충주캠)": "https://www.kku.ac.kr",
+    "공주대학교": "https://www.kongju.ac.kr",
+    "순천향대학교": "https://www.sch.ac.kr",
+    "한국기술교육대학교": "https://www.koreatech.ac.kr",
+    "호서대학교": "https://www.hoseo.ac.kr",
+    "청운대학교": "https://www.chungwoon.ac.kr",
+    "전북대학교": "https://www.jbnu.ac.kr",
+    "원광대학교": "https://www.wku.ac.kr",
+    "우석대학교": "https://www.woosuk.ac.kr",
+    "군산대학교": "https://www.kunsan.ac.kr",
+    "전주대학교": "https://www.jj.ac.kr",
+    "목포대학교": "https://www.mokpo.ac.kr",
+    "순천대학교": "https://www.sunchon.ac.kr",
+    "포항공과대학교": "https://www.postech.ac.kr",
+    "안동대학교": "https://www.andong.ac.kr",
+    "경상대학교": "https://www.gnu.ac.kr",
+    "창원대학교": "https://www.changwon.ac.kr",
+    "인제대학교": "https://www.inje.ac.kr",
+    "마산대학교": "https://www.masanc.ac.kr",
+    "제주대학교": "https://www.jejunu.ac.kr"
+}
+
+# -------------------------
 # 4. 학과 + 이모지 데이터
 # -------------------------
 departments = {
