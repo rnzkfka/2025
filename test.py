@@ -1,5 +1,5 @@
 import streamlit as st
-from colorsys import rgb_to_hls   # 색상 HEX → RGB → HLS 변환 (밝기 값 계산용)
+from colorsys import rgb_to_hls
 
 # -------------------------
 # 1. 앱 타이틀
@@ -8,14 +8,13 @@ st.markdown(
     """
     <h1 style='text-align: center; font-family: Malgun Gothic;'>전국 대학교와 학과</h1>
     """,
-    unsafe_allow_html=True   # HTML 태그 허용 → 중앙 정렬 + 폰트 적용
+    unsafe_allow_html=True
 )
 
 # -------------------------
 # 2. 시/도별 대학교 데이터
 # -------------------------
 universities = {
-    # 각 지역 이름(키) → 해당 지역 주요 대학교 리스트(값)
     "서울특별시": ["서울대학교", "연세대학교", "고려대학교", "한양대학교", "성균관대학교"],
     "광주광역시": ["전남대학교", "조선대학교", "광주과학기술원"],
     "부산광역시": ["부산대학교", "동아대학교", "부경대학교", "부산가톨릭대학교", "신라대학교"],
@@ -38,7 +37,6 @@ universities = {
 # 3. 대학교 대표 색상
 # -------------------------
 university_colors = {
-    # 각 대학교의 대표 색상 HEX 코드
     "서울대학교": "#1E4D2B",
     "연세대학교": "#003478",
     "고려대학교": "#A50034",
@@ -106,7 +104,6 @@ university_colors = {
 # 4. 학과 + 이모지 데이터
 # -------------------------
 departments = {
-    # 각 대학교별 학과 리스트 (이모지 포함)
     "서울대학교": ["컴퓨터공학과 💻", "경제학과 📈", "물리학과 🔬", "경영학과 🏢", "법학과 ⚖️"],
     "연세대학교": ["컴퓨터과학과 💻", "전자공학과 ⚡", "경영학과 🏢", "국문학과 📖", "심리학과 🧠"],
     "고려대학교": ["컴퓨터학과 💻", "법학과 ⚖️", "경영학과 🏢", "의예과 🩺", "정치외교학과 🌏"],
@@ -173,47 +170,39 @@ departments = {
 # -------------------------
 # 5. 지역 및 대학교 선택
 # -------------------------
-# 사용자에게 지역 선택 드롭다운 제공
 region = st.selectbox("지역을 선택하세요:", ["미선택"] + list(universities.keys()), index=0)
 
-if region != "미선택":   # 지역이 선택된 경우
-    # 해당 지역의 대학교 목록 드롭다운 제공
+if region != "미선택":
     univ = st.selectbox("대학교를 선택하세요:", ["미선택"] + universities[region], index=0)
 else:
-    univ = "미선택"       # 아무 것도 선택하지 않은 경우
+    univ = "미선택"
 
 # -------------------------
 # 6. 배경 색상 적용
 # -------------------------
 if univ != "미선택":
-    st.subheader(f"{univ}의 학과 리스트")   # 선택된 대학교 제목 출력
+    st.subheader(f"{univ}의 학과 리스트")
 
-    # 대학교 색상 HEX 코드 가져오기 (없으면 흰색)
     color = university_colors.get(univ, "#FFFFFF")
-    # HEX → RGB (0~1 값으로 변환)
     r = int(color[1:3], 16) / 255
     g = int(color[3:5], 16) / 255
     b = int(color[5:7], 16) / 255
-
-    # RGB → HLS 변환 (l = 밝기 값)
     h, l, s = rgb_to_hls(r, g, b)
-    # 밝기 값 기준으로 글자색 결정 (배경이 어두우면 흰색, 밝으면 검정)
     text_color = "#FFFFFF" if l < 0.5 else "#000000"
 else:
-    color = "#FFFFFF"     # 기본 배경색: 흰색
-    text_color = "#000000" # 기본 글자색: 검정
+    color = "#FFFFFF"
+    text_color = "#000000"
 
-# CSS 스타일 적용 (배경/글자 색)
 st.markdown(
     f"""
     <style>
     .stApp {{
-        background-color: {color};   /* 전체 배경 색상 */
-        color: {text_color};         /* 기본 글자 색상 */
-        font-family: 'Malgun Gothic', sans-serif;  /* 한글 폰트 */
+        background-color: {color};
+        color: {text_color};
+        font-family: 'Malgun Gothic', sans-serif;
     }}
     h1, h2, h3, h4, h5, h6, .stSelectbox label {{
-        color: {text_color};   /* 제목 및 선택박스 라벨 글자색 */
+        color: {text_color};
     }}
     </style>
     """,
@@ -224,5 +213,8 @@ st.markdown(
 # 7. 학과 출력
 # -------------------------
 if univ != "미선택":
-    if univ in departments:   # 학과 데이터가 있으면
-        for dept
+    if univ in departments:
+        for dept in departments[univ]:
+            st.write(f"- {dept}")
+    else:
+        st.write("학과 정보가 준비되지 않았습니다.")
