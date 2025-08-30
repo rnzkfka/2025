@@ -351,19 +351,19 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# -------------------------
+# 7. 학과 출력 + 설명 버튼
+# -------------------------
 if univ != "미선택":
     if univ in departments:
         for dept in departments[univ]:
-            st.write(f"- {dept}")
+            # 학과 이름과 버튼을 한 줄에 배치
+            cols = st.columns([3,1])
+            cols[0].write(f"- {dept}")  # 학과 이름
             
             # 학과 설명 버튼
             if dept in department_descriptions:
-                st.markdown(
-                    f"<button style='padding:8px 14px; margin-left:10px; border:none; border-radius:10px;"
-                    f"background-color: rgba(255, 255, 255, 0.8); color:{university_colors.get(univ, '#000000')};"
-                    f"font-weight:bold; cursor:pointer;' onclick=\"alert('{department_descriptions[dept]}')\">"
-                    f"설명 보기</button>",
-                    unsafe_allow_html=True
-                )
+                if cols[1].button("설명 보기", key=f"{univ}_{dept}"):
+                    st.info(f"{dept} 설명: {department_descriptions[dept]}")
     else:
-        st.write("학과 정보가 준비되지 않았습니다.") 
+        st.write("학과 정보가 준비되지 않았습니다.")
