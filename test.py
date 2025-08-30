@@ -356,24 +356,13 @@ if univ != "미선택":
         for dept in departments[univ]:
             # 학과 이름과 버튼 한 줄 배치
             cols = st.columns([3,1])
-            cols[0].write(f"- {dept}")  # 학과 이름
+            cols[0].write(f"- {dept}")
 
-            # 버튼 HTML
-            button_html = f"""
-            <form action="" method="post">
-            <input type="submit" name="{univ}_{dept}" value="설명 보기"
-                   style="padding:8px 14px; border:none; border-radius:10px;
-                          background-color: rgba(255, 255, 255, 0.8);
-                          color:{university_colors.get(univ, '#000000')};
-                          font-weight:bold; cursor:pointer;">
-            </form>
-            """
-            cols[1].markdown(button_html, unsafe_allow_html=True)
-
-            # 클릭 감지
-            if f"{univ}_{dept}" in st.session_state:
+            # Streamlit 버튼 (홈페이지 버튼과 동일한 디자인은 CSS로 꾸밈)
+            button_clicked = cols[1].button("설명 보기", key=f"{univ}_{dept}")
+            if button_clicked:
                 st.markdown(
-                    f"<div style='background-color:{university_colors.get(univ,'#000000')};"
+                    f"<div style='background-color:{university_colors.get(univ,'#000000')}; "
                     f"color:#ffffff; padding:10px; border-radius:10px; margin-bottom:10px;'>"
                     f"{department_descriptions.get(dept,'이 학과의 상세 설명은 준비 중입니다.')}"
                     f"</div>",
