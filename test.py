@@ -2,6 +2,31 @@ import streamlit as st
 from colorsys import rgb_to_hls
 
 # -------------------------
+# 0. 홈페이지 버튼 스타일 함수 정의
+# -------------------------
+def homepage_style_button(label, key, univ_color="#000000"):
+    """
+    홈페이지 바로가기 버튼과 동일한 스타일의 버튼을 생성
+    클릭 이벤트는 Streamlit st.button으로 안전하게 처리
+    """
+    # 클릭 이벤트 감지
+    clicked = st.button(label, key=key)
+
+    # 버튼 스타일 HTML (반투명 흰색 배경, 둥근 모서리, 글씨는 대학교 색상)
+    button_html = f"""
+    <div style='display:inline-block;'>
+        <button style='padding:8px 14px; border:none; border-radius:10px;
+                       background-color: rgba(255, 255, 255, 0.8);
+                       color:{univ_color};
+                       font-weight:bold; cursor:pointer;'>
+            {label}
+        </button>
+    </div>
+    """
+    st.markdown(button_html, unsafe_allow_html=True)
+    return clicked
+
+# -------------------------
 # 1. 앱 타이틀
 # -------------------------
 st.markdown(
