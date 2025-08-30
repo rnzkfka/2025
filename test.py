@@ -250,15 +250,17 @@ else:
 if univ != "미선택":
     st.subheader(f"{univ}의 학과 리스트")
 
-        # 선택한 대학교 홈페이지 버튼 (새 창 열기, 반투명 흰색 버튼)
+    # 선택한 대학교 홈페이지 버튼 (새 창 열기, 반투명 흰색 버튼)
     if univ in university_urls:
+        univ_color = university_colors.get(univ, "#000000")  # 안전하게 색상 가져오기
         st.markdown(
             f"<a href='{university_urls[univ]}' target='_blank' style='text-decoration:none;'>"
             f"<button style='padding:10px 18px; border:none; border-radius:10px;"
-            f"background-color: rgba(255, 255, 255, 0.8); color:{color}; font-weight:bold; cursor:pointer;'>"
+            f"background-color: rgba(255, 255, 255, 0.8); color:{univ_color}; font-weight:bold; cursor:pointer;'>"
             f"{univ} 홈페이지 바로가기</button></a>",
             unsafe_allow_html=True
         )
+
 
     color = university_colors.get(univ, "#FFFFFF")
     r = int(color[1:3], 16) / 255
