@@ -354,25 +354,21 @@ st.markdown(
 )
 
 # -------------------------
-# 7. 학과 출력 + 설명 버튼 (홈페이지 버튼 디자인)
+# 7. 학과 출력 + 설명 버튼
 # -------------------------
 if univ != "미선택":
     if univ in departments:
         for dept in departments[univ]:
-            cols = st.columns([3,1])
-            cols[0].write(f"- {dept}")  # 학과 이름
+            st.write(f"- {dept} ", end="")  # 학과 이름 출력
 
-            # 학과 설명 버튼 (홈페이지 버튼과 동일한 디자인)
-            button_clicked = cols[1].button("설명 보기", key=f"{univ}_{dept}")
-
-            # 클릭 시 설명 표시
-            if button_clicked:
-                st.markdown(
-                    f"<div style='background-color:{university_colors.get(univ,'#000000')}; "
-                    f"color:#ffffff; padding:10px; border-radius:10px; margin-bottom:10px;'>"
-                    f"{department_descriptions.get(dept,'이 학과의 상세 설명은 준비 중입니다.')}"
-                    f"</div>",
-                    unsafe_allow_html=True
-                )
+            # 학과 설명 버튼
+            desc = department_descriptions.get(dept, "설명이 준비되지 않았습니다.")
+            st.markdown(
+                f"<button onclick=\"alert('{desc}')\" "
+                f"style='padding:10px 18px; border:none; border-radius:10px;"
+                f"background-color: rgba(255, 255, 255, 0.8); color:{univ_color}; font-weight:bold; cursor:pointer;'>"
+                f"설명 보기</button>",
+                unsafe_allow_html=True
+            )
     else:
         st.write("학과 정보가 준비되지 않았습니다.")
