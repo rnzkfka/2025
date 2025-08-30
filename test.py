@@ -352,7 +352,7 @@ st.markdown(
 )
 
 # -------------------------
-# 7. 학과 출력 + 설명 버튼
+# 7. 학과 출력 + 설명 버튼 (홈페이지 버튼 스타일)
 # -------------------------
 if univ != "미선택":
     if univ in departments:
@@ -361,9 +361,24 @@ if univ != "미선택":
             cols = st.columns([3,1])
             cols[0].write(f"- {dept}")  # 학과 이름
             
-            # 모든 학과에 대해 설명 버튼 생성
-            if cols[1].button("설명 보기", key=f"{univ}_{dept}"):
-                description = department_descriptions.get(dept, "이 학과의 상세 설명은 준비 중입니다.")
-                st.info(f"{dept} 설명: {description}")
+            # 버튼 HTML 생성
+            button_html = f"""
+            <button style='padding:8px 14px; border:none; border-radius:10px;
+                           background-color: rgba(255, 255, 255, 0.8);
+                           color:{university_colors.get(univ, '#000000')};
+                           font-weight:bold; cursor:pointer;' 
+                    onclick="document.getElementById('desc_{univ}_{dept}').style.display='block'">
+                설명 보기
+            </button>
+            """
+            cols[1].markdown(button_html, unsafe_allow_html=True)
+            
+            # 설명 영역 (처음엔 숨김)
+            desc_text = department_descriptions.get(dept, "이 학과의 상세 설명은 준비 중입니다.")
+            st.markdown(
+                f"<div id='desc_{univ}_{dept}' style='display:none; margin:5px 0px; padding:10px; "
+                f"background-color:#333; color:#ffffff; border-radius:8px;'>{desc_text}</div>",
+                unsafe_allow_html=True
+            )
     else:
         st.write("학과 정보가 준비되지 않았습니다.")
