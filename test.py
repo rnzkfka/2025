@@ -250,6 +250,12 @@ else:
 if univ != "미선택":
     st.subheader(f"{univ}의 학과 리스트")
 
+        # 선택한 대학교 홈페이지 버튼
+    if univ in university_urls:
+        if st.button(f"{univ} 홈페이지 바로가기"):
+            st.markdown(f"[{univ} 홈페이지 열기]({university_urls[univ]})", unsafe_allow_html=True)
+
+
     color = university_colors.get(univ, "#FFFFFF")
     r = int(color[1:3], 16) / 255
     g = int(color[3:5], 16) / 255
