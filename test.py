@@ -1,30 +1,7 @@
 import streamlit as st
 from colorsys import rgb_to_hls
 
-# -------------------------
-# 0. 홈페이지 버튼 스타일 함수 정의
-# -------------------------
-def homepage_style_button(label, key, univ_color="#000000"):
-    """
-    홈페이지 바로가기 버튼과 동일한 스타일의 버튼을 생성
-    클릭 이벤트는 Streamlit st.button으로 안전하게 처리
-    """
-    # 클릭 이벤트 감지
-    clicked = st.button(label, key=key)
 
-    # 버튼 스타일 HTML (반투명 흰색 배경, 둥근 모서리, 글씨는 대학교 색상)
-    button_html = f"""
-    <div style='display:inline-block;'>
-        <button style='padding:8px 14px; border:none; border-radius:10px;
-                       background-color: rgba(255, 255, 255, 0.8);
-                       color:{univ_color};
-                       font-weight:bold; cursor:pointer;'>
-            {label}
-        </button>
-    </div>
-    """
-    st.markdown(button_html, unsafe_allow_html=True)
-    return clicked
 
 # -------------------------
 # 1. 앱 타이틀
@@ -376,15 +353,19 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# -------------------------
+# 7. 학과 출력 + 설명 버튼 (홈페이지 버튼 디자인)
+# -------------------------
 if univ != "미선택":
     if univ in departments:
         for dept in departments[univ]:
-            # 학과 이름과 버튼 한 줄 배치
             cols = st.columns([3,1])
-            cols[0].write(f"- {dept}")
+            cols[0].write(f"- {dept}")  # 학과 이름
 
-            # Streamlit 버튼 (홈페이지 버튼과 동일한 디자인은 CSS로 꾸밈)
+            # 학과 설명 버튼 (홈페이지 버튼과 동일한 디자인)
             button_clicked = cols[1].button("설명 보기", key=f"{univ}_{dept}")
+
+            # 클릭 시 설명 표시
             if button_clicked:
                 st.markdown(
                     f"<div style='background-color:{university_colors.get(univ,'#000000')}; "
@@ -393,3 +374,5 @@ if univ != "미선택":
                     f"</div>",
                     unsafe_allow_html=True
                 )
+    else:
+        st.write("학과 정보가 준비되지 않았습니다.")
