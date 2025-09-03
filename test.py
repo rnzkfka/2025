@@ -115,14 +115,18 @@ h1, h2, h3, h4, h5, h6, .stSelectbox label {{
 # -------------------------
 if univ != "미선택":
     # 홈페이지 버튼
-    if univ in university_urls:
-        st.markdown(
-            f"<a href='{university_urls[univ]}' target='_blank' style='text-decoration:none;'>"
-            f"<button style='padding:10px 18px; border:none; border-radius:10px;"
-            f"background-color: rgba(255, 255, 255, 0.8); color:{text_color}; font-weight:bold; cursor:pointer;'>"
-            f"{univ} 홈페이지 바로가기</button></a>",
-            unsafe_allow_html=True
-        )
+ # -------------------------
+# 홈페이지 버튼
+# -------------------------
+        if univ in university_urls:
+            st.markdown(
+                f"<a href='{university_urls[univ]}' target='_blank' style='text-decoration:none;'>"
+                f"<button style='padding:10px 18px; border:none; border-radius:10px;"
+                f"background-color: rgba(255, 255, 255, 0.6); color:{text_color}; font-weight:bold; cursor:pointer;'>"
+                f"{univ} 홈페이지 바로가기</button></a>",
+                unsafe_allow_html=True
+            )
+
 
     st.subheader(f"{univ} 학과 리스트")
     if univ in departments:
