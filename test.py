@@ -129,6 +129,6 @@ if univ != "미선택":
     if univ in departments:
         for dept in departments[univ]:
             url = university_urls.get(univ, "#")
-            st.markdown(f"- {dept} [홈페이지]({url})")
+            st.markdown(f"- {dept}")
     else:
         st.write("학과 정보가 준비되지 않았습니다.")
