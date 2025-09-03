@@ -360,3 +360,16 @@ if univ != "미선택":
     if univ in departments:
         for dept in departments[univ]:
             st.write(f"- {dept} ", end="")  # 학과 이름 출력
+
+
+            # 학과 설명 버튼
+            desc = department_descriptions.get(dept, "설명이 준비되지 않았습니다.")
+            st.markdown(
+                f"<button onclick=\"alert('{desc}')\" "
+                f"style='padding:10px 18px; border:none; border-radius:10px;"
+                f"background-color: rgba(255, 255, 255, 0.8); color:{univ_color}; font-weight:bold; cursor:pointer;'>"
+                f"설명 보기</button>",
+                unsafe_allow_html=True
+            )
+    else:
+        st.write("학과 정보가 준비되지 않았습니다.")
