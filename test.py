@@ -321,11 +321,28 @@ university_urls = {
 # -------------------------
 region = st.selectbox("지역을 선택하세요:", ["미선택"] + list(universities.keys()), index=0)
 
-if region != "미선택":
-    univ = st.selectbox("대학교를 선택하세요:", ["미선택"] + universities[region], index=0)
-else:
-    univ = "미선택"
+univ = st.selectbox(
+    "대학교를 선택하세요:",
+    ["미선택"] + list(universities[region].keys()),  # 수정된 부분
+    index=0
+)
 
+if univ != "미선택":
+    dept = st.selectbox(
+        "학과를 선택하세요:",
+        ["미선택"] + universities[region][univ],
+        index=0
+    )
+
+    if dept != "미선택":
+        desc = department_descriptions.get(dept, "설명이 준비되지 않았습니다.")
+        st.markdown(
+            f"<button onclick=\"alert('{desc}')\" "
+            f"style='padding:10px 18px; border:none; border-radius:10px;"
+            f"background-color: rgba(255, 255, 255, 0.8); color:black; font-weight:bold; cursor:pointer;'>"
+            f"설명 보기</button>",
+            unsafe_allow_html=True
+        )
 # -------------------------
 # 6. 배경 색상 적용
 # -------------------------
