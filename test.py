@@ -298,6 +298,7 @@ university_urls = {
 }
 
 
+# 대학교 색상 계산
     color = university_colors.get(univ, "#FFFFFF")
     r = int(color[1:3], 16) / 255
     g = int(color[3:5], 16) / 255
